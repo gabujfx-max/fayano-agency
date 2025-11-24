@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Calendar, MapPin, User, Phone, CheckCircle, Loader2, ShieldCheck, LocateFixed, Send, Mail, Smartphone } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, MapPin, User, Phone, CheckCircle, Loader2, ShieldCheck, LocateFixed, Send, Mail, Smartphone } from 'lucide-react';
 import { ServiceCategory, BookingDetails, AIAnalysisResult } from '../types';
 
 interface BookingFormProps {
@@ -8,12 +8,6 @@ interface BookingFormProps {
   onBack: () => void;
   onComplete: () => void;
 }
-
-const TIME_SLOTS = [
-  "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM", 
-  "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", 
-  "04:00 PM", "05:00 PM"
-];
 
 export const BookingForm: React.FC<BookingFormProps> = ({ initialService, aiData, onBack, onComplete }) => {
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -42,10 +36,6 @@ export const BookingForm: React.FC<BookingFormProps> = ({ initialService, aiData
     if (e.target.name === 'contactPhone' && !paymentPhone) {
         setPaymentPhone(e.target.value);
     }
-  };
-
-  const handleTimeSelect = (time: string) => {
-    setFormData({ ...formData, time });
   };
 
   const handleNextStep = () => {
@@ -229,28 +219,22 @@ export const BookingForm: React.FC<BookingFormProps> = ({ initialService, aiData
                       min={today}
                       value={formData.date}
                       onChange={handleChange}
-                      className="w-full pl-12 p-4 border border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-4 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all cursor-pointer shadow-sm"
+                      className="w-full pl-12 p-4 border border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-4 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all cursor-pointer shadow-sm appearance-none"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">Preferred Time Slot</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {TIME_SLOTS.map((slot) => (
-                      <button
-                        key={slot}
-                        onClick={() => handleTimeSelect(slot)}
-                        className={`py-2 px-2 text-sm rounded-lg border font-medium transition-all ${
-                          formData.time === slot
-                            ? 'bg-brand-600 text-white border-brand-600 shadow-md transform scale-105'
-                            : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-brand-400 hover:bg-brand-50 dark:hover:bg-gray-600'
-                        }`}
-                      >
-                        {slot}
-                      </button>
-                    ))}
+                  <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">Preferred Time</label>
+                  <div className="relative group">
+                    <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-brand-600 transition-colors" />
+                    <input 
+                      type="time" 
+                      name="time"
+                      value={formData.time}
+                      onChange={handleChange}
+                      className="w-full pl-12 p-4 border border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-4 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all cursor-pointer shadow-sm appearance-none"
+                    />
                   </div>
-                  {formData.time && <p className="text-xs text-brand-600 dark:text-brand-400 mt-2 font-medium flex items-center gap-1"><CheckCircle className="w-3 h-3"/> Selected: {formData.time}</p>}
                 </div>
               </div>
 
